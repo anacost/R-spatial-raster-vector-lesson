@@ -28,9 +28,11 @@ image:
 comments: true
 ---
 
-```{r echo=FALSE}
+
+~~~{r echo=FALSE}
 source("../bin/chunk-options.R")
-```
+~~~
+{: .language-r}
 
 > ## Things You’ll Need To Complete This Tutorial
 > **R Skill Level:** Intermediate - you've got the basics of `R` down.
@@ -68,7 +70,7 @@ have the `DSM_HARV` object from the
 [Intro To Raster In R tutorial]({{ site.baseurl }}/R/Introduction-to-Raster-Data-In-R/),
 please create it now.
 
-```{r load-libraries }
+~~~ {r load-libraries }
 # if they are not already loaded
 library(rgdal)
 library(raster)
@@ -79,17 +81,19 @@ library(raster)
 # import raster
 DSM_HARV <- raster("data/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif")
 
-```
+~~~
+{: .language-r}
 
 First, let's plot our Digital Surface Model object (`DSM_HARV`) using the
 `plot()` function. We add a title using the argument `main = "title"`.
 
-```{r hist-raster }
+~~~{r hist-raster }
 # Plot raster object
 plot(DSM_HARV,
      main = "Digital Surface Model\nNEON Harvard Forest Field Site")
 
-```
+~~~
+{: .language-r}
 
 ## Plotting Data Using Breaks
 We can view our data "symbolized" or colored according to ranges of values
@@ -101,7 +105,7 @@ tells `R` to use fewer or more breaks or bins.
 If we name the histogram, we can also view counts for each bin and assigned
 break values.
 
-```{r create-histogram-breaks }
+~~~{r create-histogram-breaks }
 # Plot distribution of raster values
 DSMhist <- hist(DSM_HARV,
      breaks = 3,
@@ -112,7 +116,8 @@ DSMhist <- hist(DSM_HARV,
 # Where are breaks and how many pixels in each category?
 DSMhist$breaks
 DSMhist$counts
-```
+~~~
+{: .language-r}
 
 Warning message!? Remember, the default for the histogram is to include only a
 subset of 100,000 values. We could force it to show all the pixel values or we
@@ -135,14 +140,15 @@ occur, we use the following syntax: `breaks=c(value1, value2, value3)`.
 We can include as few or many breaks as we'd like.
 
 
-```{r plot-with-breaks }
+~~~{r plot-with-breaks }
 # plot using breaks.
 plot(DSM_HARV,
      breaks = c(300, 350, 400, 450),
      col = terrain.colors(3),
      main = "Digital Surface Model (DSM)\n NEON Harvard Forest Field Site")
 
-```
+~~~
+{: .language-r}
 
 > ## Data Tip
 > Note that when we assign break values a set of 4 values will result in 3 bins of data.
@@ -156,7 +162,7 @@ object.
 
 We can label the x- and y-axes of our plot too using `xlab` and `ylab`.
 
-```{r add-plot-title }
+~~~{r add-plot-title }
 # Assign color to a object for repeat use/ ease of changing
 myCol <- terrain.colors(3)
 
@@ -167,11 +173,12 @@ plot(DSM_HARV,
      main = "Digital Surface Model\nNEON Harvard Forest Field Site",
      xlab = "UTM Westing Coordinate (m)",
      ylab = "UTM Northing Coordinate (m)")
-```
+~~~
+{: .language-r}
 
 Or we can also turn off the axes altogether.
 
-```{r turn-off-axes }
+~~~{r turn-off-axes }
 # or we can turn off the axis altogether
 plot(DSM_HARV,
      breaks = c(300, 350, 400, 450),
@@ -179,7 +186,8 @@ plot(DSM_HARV,
      main = "Digital Surface Model\n NEON Harvard Forest Field Site",
      axes = FALSE)
 
-```
+~~~
+{: .language-r}
 
 
 > ## Challenge: Plot Using Custom Breaks
@@ -191,7 +199,7 @@ plot(DSM_HARV,
 > 3. A plot title
 >
 > > ## Answers
-> > ``` {r challenge-code-plotting, eval=TRUE, echo=FALSE}
+> > ~~~ {r challenge-code-plotting, eval=TRUE, echo=FALSE}
 > > # Find min & max
 > > DSM_HARV@data
 > > # Pixel range & even category width
@@ -205,7 +213,7 @@ plot(DSM_HARV,
 > >       main = "Digital Surface Model\nNEON Harvard Forest Field Site",
 > >      xlab = "UTM Westing Coordinate",
 > >      ylab = "UTM Northing Coordinate")
-> > ```
+> > ~~~
 > {: .solution}
 {: .challenge}
 
@@ -215,7 +223,7 @@ transparency factor to created a 3-dimensional shaded effect. A
 hillshade is a raster that maps the shadows and texture that you would see from
 above when viewing terrain.
 
-```{r hillshade }
+~~~{r hillshade }
 # import DSM hillshade
 DSM_hill_HARV <-
   raster("data/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_DSMhill.tif")
@@ -227,7 +235,8 @@ plot(DSM_hill_HARV,
     main = "Hillshade - DSM\n NEON Harvard Forest Field Site",
     axes = FALSE)
 
-```
+~~~
+{: .language-r}
 
 > ## Data Tip
 > Turn off, or hide, the legend on a plot using `legend=FALSE`.
@@ -236,7 +245,7 @@ plot(DSM_hill_HARV,
 We can layer another raster on top of our hillshade using by using `add = TRUE`.
 Let's overlay `DSM_HARV` on top of the `hill_HARV`.
 
-``` {r overlay-hillshade}
+~~~ {r overlay-hillshade}
 
 # plot hillshade using a grayscale color ramp that looks like shadows.
 plot(DSM_hill_HARV,
@@ -251,7 +260,8 @@ plot(DSM_HARV,
      alpha = 0.4,
      add = T,
      legend = F)
-```
+~~~
+{: .language-r}
 
 The alpha value determines how transparent the colors will be (0 being
 transparent, 1 being opaque). Note that here we used the color palette
@@ -276,7 +286,7 @@ Range field site.
 >
 > > ## Answers
 > > 
-> > ```{r challenge-hillshade-layering, echo=TRUE}
+> > ~~~ {r challenge-hillshade-layering, echo=TRUE}
 > > # CREATE DSM MAPS
 > > # import DSM
 > > DSM_SJER <- raster("data/NEON-DS-Airborne-Remote-Sensing/SJER/DSM/SJER_dsmCrop.tif")
@@ -316,6 +326,6 @@ Range field site.
 > >      alpha = 0.4,
 > >      add = TRUE,
 > >      legend = FALSE)
-> > ```
+> >~~~
 > {: .solution}
 {: .challenge}

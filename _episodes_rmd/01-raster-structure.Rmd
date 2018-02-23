@@ -29,9 +29,10 @@ values as stored in a raster and how R handles these elements. Finally, it
 introduces the GeoTiff file format."
 ---
 
-```{r echo=FALSE}
+~~~{r echo=FALSE}
 source("../bin/chunk-options.R")
-```
+~~~
+{: .language-r}
 
 > ## Things You’ll Need To Complete This Tutorial
 > **R Skill Level:** Intermediate - you've got the basics of `R` down.
@@ -93,22 +94,24 @@ NEON AOP LiDAR sensor</a>
 is below. Elevation is represented as continuous numeric variable in this map. The legend
 shows the continuous range of values in the data from around 300 to 420 meters.
 
-```{r load-libraries-1, results='hide', echo=FALSE}
+~~~{r load-libraries-1, results='hide', echo=FALSE}
 
 library(raster)
 library(rgdal)
 
-```
+~~~
+{: .language-r}
 
 
-```{r elevation-map, echo=FALSE}
+~~~{r elevation-map, echo=FALSE}
 # render DSM for tutorial content background
 DSM_HARV <- raster("data/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif")
 
 # code output here - DEM rendered on the screen
 plot(DSM_HARV, main = "Continuous Elevation Map\n NEON Harvard Forest Field Site")
 
-```
+~~~
+{: .language-r}
 
 Some rasters contain categorical data where each pixel represents a discrete
 class such as a landcover type (e.g., "forest" or "grassland") rather than a
@@ -134,7 +137,7 @@ maps include:
 #### Categorical Elevation Map of the NEON Harvard Forest Site
 The legend of this map shows the colors representing each discrete class.
 
-```{r classified-elevation-map, echo=FALSE}
+~~~{r classified-elevation-map, echo=FALSE}
 # Demonstration image for the tutorial
 
 # add a color map with 5 colors
@@ -157,7 +160,8 @@ par(xpd = TRUE)
 legend(par()$usr[2], 4713700,
         legend = c("High Elevation", "Middle", "Low Elevation"),
         fill = rev(col))
-```
+~~~
+{: .language-r}
 
 ## What is a GeoTIFF??
 Raster data can come in many different formats. In this tutorial, we will use the
@@ -186,14 +190,15 @@ More about the  `.tif` format:
 Let's first import a raster dataset into `R` and explore its metadata.
 To open rasters in `R`, we will use the `raster` and `rgdal` packages.
 
-```{r load-libraries }
+~~~{r load-libraries }
 # load libraries
 library(raster)
 library(rgdal)
 
 # set working directory to ensure R can find the file we wish to import
 # setwd("working-dir-path-here")
-```
+~~~
+{: .language-r}
 
 ## Open a Raster in R
 We can use the `raster("path-to-raster-here")` function to open a raster in R.
@@ -205,7 +210,7 @@ We can use the `raster("path-to-raster-here")` function to open a raster in R.
 > we'll use a naming convention of `datatype_HARV`.
 {: .callout}
 
-```{r open-raster }
+~~~{r open-raster }
 # Load raster into R
 DSM_HARV <- raster("data/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif")
 
@@ -217,7 +222,8 @@ DSM_HARV
 plot(DSM_HARV,
      main = "NEON Digital Surface Model\nHarvard Forest")
 
-```
+~~~
+{: .language-r}
 
 Here is a map showing the elevation of our site in Harvard Forest. Is the max
 elevation value within this raster greater than 400 meters or 400 feet? Perhaps
@@ -266,7 +272,7 @@ seems proportionally larger or smaller than they actually are!
 We can view the `CRS` string associated with our `R` object using the`crs()`
 method. We can assign this string to an `R` object, too.
 
-```{r view-resolution-units}
+~~~{r view-resolution-units}
 # view resolution units
 crs(DSM_HARV)
 
@@ -274,7 +280,8 @@ crs(DSM_HARV)
 myCRS <- crs(DSM_HARV)
 myCRS
 
-```
+~~~
+{: .language-r}
 
 The `CRS` of our `DSM_HARV` object tells us that our data are in the universal transverse mercator (UTM) projection.
 
@@ -335,9 +342,10 @@ Given our data resolution is 1 x 1, this means that each pixel represents a
 The best way to view resolution units is to look at the
 coordinate reference system string `crs()`. Notice our data contains: `+units=m`.
 
-``` {r resolution-units}
+~~~ {r resolution-units}
 crs(DSM_HARV)
-```
+~~~
+{: .language-r}
 
 ## Calculate Raster Min and Max Values
 
@@ -349,7 +357,7 @@ Raster statistics are often calculated and embedded in a `geotiff` for us.
 However if they weren't already calculated, we can calculate them using the
 `setMinMax()` function.
 
-```{r set-min-max }
+~~~{r set-min-max }
 
 # This is the code if min/max weren't calculated:
 # DSM_HARV <- setMinMax(DSM_HARV)
@@ -360,7 +368,8 @@ minValue(DSM_HARV)
 # view only max value
 maxValue(DSM_HARV)
 
-```
+~~~
+{: .language-r}
 
 We can see that the elevation at our site ranges from 305.07m to 416.07m.
 
@@ -378,7 +387,7 @@ region.
 In the image below, the pixels that are black have `NoDataValue`s.
 The camera did not collect data in these areas.
 
-```{r demonstrate-no-data-black, echo=FALSE }
+~~~ {r demonstrate-no-data-black, echo=FALSE }
 # no data demonstration code - not being taught
 # Use stack function to read in all bands
 RGB_stack <-
@@ -389,11 +398,12 @@ par(col.axis = "white", col.lab = "white", tck = 0)
 plotRGB(RGB_stack, r = 1, g = 2, b = 3,
         axes = TRUE, main = "Raster With NoData Values\nRendered in Black")
 
-```
+~~~
+{: .language-r}
 
 In the next image, the black edges have been assigned `NoDataValue`. `R` doesn't render pixels that contain a specified `NoDataValue`. `R` assigns missing data with the `NoDataValue` as `NA`.
 
-```{r demonstrate-no-data, echo=FALSE}
+~~~{r demonstrate-no-data, echo=FALSE}
 # reassign cells with 0,0,0 to NA
 # this is simply demonstration code - we will not teach this.
 f <- function(x) {
@@ -409,7 +419,8 @@ par(col.axis = "white", col.lab = "white", tck = 0)
 plotRGB(newRGBImage, r = 1, g = 2, b = 3,
         axes = TRUE, main = "Raster With No Data Values\nNoDataValue= NA")
 
-```
+~~~
+{: .language-r}
 
 ### NoData Value Standard
 
@@ -451,7 +462,7 @@ We can explore the distribution of values contained within our raster using the
 `hist()` function which produces a histogram. Histograms are often useful in
 identifying outliers and bad data values in our raster data.
 
-```{r view-raster-histogram }
+~~~ {r view-raster-histogram }
 
 # view histogram of data
 hist(DSM_HARV,
@@ -460,7 +471,8 @@ hist(DSM_HARV,
      ylab = "Frequency",
      col = "wheat")
 
-```
+~~~
+{: .language-r}
 
 Notice that an warning message is thrown when `R` creates the histogram.
 
@@ -479,7 +491,7 @@ histogram. **USE THIS WITH CAUTION** as forcing `R` to plot all pixel values
 in a histogram can be problematic when dealing with very large datasets.
 
 
-``` {r view-raster-histogram2}
+~~~ {r view-raster-histogram2}
 
 # View the total number of pixels (cells) in is our raster
 ncell(DSM_HARV)
@@ -492,7 +504,8 @@ hist(DSM_HARV,
      ylab = "Frequency",
      col = "wheat4")
 
-```
+~~~
+{: .language-r}
 
 Note that the shape of both histograms looks similar to the previous one that
  was created using a representative 10,000 pixel subset of our raster data. The
@@ -515,12 +528,13 @@ A raster dataset can contain one or more bands. We can use the `raster()` functi
 to import one single band from a single OR multi-band raster. We can view the number
 of bands in a raster using the `nlayers()` function.
 
-```{r view-raster-bands }
+~~~ {r view-raster-bands }
 
 # view number of bands
 nlayers(DSM_HARV)
 
-```
+~~~
+{: .language-r}
 
 However, raster data can also be multi-band meaning that one raster file
 contains data for more than one variable or time period for each cell. By
@@ -537,12 +551,13 @@ metadata about the raster. So far, we've explored raster metadata **after**
 importing it in `R`. However, we can use the `GDALinfo("path-to-raster-here")`
 function to view raster metadata before we open a file in `R`.
 
-```{r view-attributes-gdal}
+~~~{r view-attributes-gdal}
 
 # view attributes before opening file
 GDALinfo("data/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif")
 
-```
+~~~
+{: .language-r}
 
 Notice a few things in the output:
 
@@ -571,9 +586,10 @@ It is ideal to use `GDALinfo` to explore your file **before** reading it into
 > > 
 > > ## Answers
 > > 
-> > ``` {r challenge-code-attributes, eval=TRUE, echo=FALSE}
+> > ~~~ {r challenge-code-attributes, eval=TRUE, echo=FALSE}
 GDALinfo("data/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_DSMhill.tif")
-> > ```
+> > ~~~
+{: .language-r}
 > > 1. If this file has the same CRS as DSM_HARV?  Yes: UTM Zone 18, WGS84, meters.
 > > 2. What format `NoDataValues` take?  -9999
 > > 3. The resolution of the raster data? 1x1

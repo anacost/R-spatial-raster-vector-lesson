@@ -30,9 +30,10 @@ image:
 comments: true
 ---
 
-```{r echo=FALSE}
+~~~{r echo=FALSE}
 source("../bin/chunk-options.R")
-```
+~~~
+{: .language-r}
 
 > ## Things You’ll Need To Complete This Tutorial
 >
@@ -88,7 +89,7 @@ will use the DTM (`NEON-DS-Airborne-Remote-Sensing/HARV/DTM/HARV_dtmCrop.tif`)
 and DSM (`NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif`) from the
 NEON Harvard Forest Field site.
 
-```{r load-libraries }
+~~~{r load-libraries }
 # load raster package
 library(raster)
 library(rgdal)
@@ -97,7 +98,8 @@ library(rgdal)
 GDALinfo("data/NEON-DS-Airborne-Remote-Sensing/HARV/DTM/HARV_dtmCrop.tif")
 GDALinfo("data/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif")
 
-```
+~~~
+{: .language-r}
 
 As seen from the `geoTiff` tags, both rasters have:
 
@@ -107,7 +109,7 @@ As seen from the `geoTiff` tags, both rasters have:
 
 Let's load the data.
 
-``` {r load-plot-data}
+~~~ {r load-plot-data}
 # load the DTM & DSM rasters
 DTM_HARV <- raster("data/NEON-DS-Airborne-Remote-Sensing/HARV/DTM/HARV_dtmCrop.tif")
 DSM_HARV <- raster("data/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif")
@@ -118,7 +120,8 @@ plot(DTM_HARV,
 
 plot(DSM_HARV,
      main = "Digital Surface Model \n NEON Harvard Forest Field Site")
-```
+~~~
+{: .language-r}
 
 ## Two Ways to Perform Raster Calculations
 
@@ -138,7 +141,7 @@ multiplying, etc) two rasters. In the geospatial world, we call this
 
 Let's subtract the DTM from the DSM to create a Canopy Height Model.
 
-```{r raster-math }
+~~~{r raster-math }
 # Raster math example
 CHM_HARV <- DSM_HARV - DTM_HARV
 
@@ -147,12 +150,13 @@ plot(CHM_HARV,
      main = "Canopy Height Model - Raster Math Subtract\n NEON Harvard Forest Field Site",
      axes = FALSE)
 
-```
+~~~
+{: .language-r}
 
 Let's have a look at the distribution of values in our newly created
 Canopy Height Model (CHM).
 
-```{r create-hist }
+~~~{r create-hist }
 # histogram of CHM_HARV
 hist(CHM_HARV,
   col = "springgreen4",
@@ -160,7 +164,8 @@ hist(CHM_HARV,
   ylab = "Number of Pixels",
   xlab = "Tree Height (m) ")
 
-```
+~~~
+{: .language-r}
 
 Notice that the range of values for the output CHM is between 0 and 30 meters.
 Does this make sense for trees in Harvard Forest?
@@ -177,7 +182,7 @@ Does this make sense for trees in Harvard Forest?
 > 
 > > ## Answers
 > > 
-> > ```{r challenge-code-CHM-HARV, echo=TRUE}
+> > ~~~ {r challenge-code-CHM-HARV, echo=TRUE}
 > > # 1)
 > > minValue(CHM_HARV)
 > > maxValue(CHM_HARV)
@@ -201,7 +206,7 @@ Does this make sense for trees in Harvard Forest?
 > >      col=myCol,
 > >      axes=F,
 > >      main = "Canopy Height Model \nNEON Harvard Forest Field Site")
-> > ```
+> > ~~~
 > {: .solution}
 {: .challenge}
 
@@ -234,14 +239,15 @@ them using efficient processing methods. The syntax is
 Let's perform the same subtraction calculation that we calculated above using
 raster math, using the `overlay()` function.
 
-```{r raster-overlay }
+~~~{r raster-overlay }
 CHM_ov_HARV<- overlay(DSM_HARV,
                       DTM_HARV,
                       fun=function(r1, r2){return(r1-r2)})
 
 plot(CHM_ov_HARV,
   main = "Canopy Height Model - Overlay Subtract\n NEON Harvard Forest Field Site")
-```
+~~~
+{: .language-r}
 
 How do the plots of the CHM created with manual raster math and the `overlay()`
 function compare?
@@ -264,7 +270,7 @@ contains (CHM data) and for where (HARVard Forest). The `writeRaster()` function
 by default writes the output file to your working directory unless you specify a
 full file path.
 
-```{r write-raster, eval=FALSE}
+~~~{r write-raster, eval=FALSE}
 # export CHM object to new GeotIFF
 writeRaster(CHM_ov_HARV, "chm_HARV.tiff",
             format="GTiff",  # specify output format - GeoTIFF
@@ -272,7 +278,8 @@ writeRaster(CHM_ov_HARV, "chm_HARV.tiff",
                             # existing file
             NAflag=-9999) # set no data value to -9999
 
-```
+~~~
+{: .language-r}
 
 ### writeRaster Options
 The function arguments that we used above include:
@@ -314,7 +321,7 @@ are what you expect.
 > Hint: plotting SJER and HARV data side-by-side is an effective way to compare
 both datasets!
 > > ## Answers
-> > ```{r challenge-code-SJER-CHM, include=TRUE, results="hide", echo=TRUE}
+> > ~~~ {r challenge-code-SJER-CHM, include=TRUE, results="hide", echo=TRUE}
 > > # 1.
 > > # load the DTM
 > > DTM_SJER <- raster("data/NEON-DS-Airborne-Remote-Sensing/SJER/DTM/SJER_dtmCrop.tif")
@@ -378,7 +385,7 @@ both datasets!
 > >   ylab = "Number of Pixels",
 > >   xlab = "Elevation (m)")
 > > 
-> > ```
+> > ~~~
 > {: .solution}
 {: .challenge}
 
